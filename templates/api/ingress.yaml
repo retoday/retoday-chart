@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Values.api.name }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app.kubernetes.io/component: api
+  annotations: {{- toYaml .Values.sslAnnotations | nindent 4 }}
+spec:
+  ingressClassName: {{ .Values.ingressClassName }}
+  tls:
+  - secretName: retoday-api-tls
+    hosts:
+    - {{ .Values.api.ingress.host }}
+  rules:
+  - host: {{ .Values.api.ingress.host }}
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: retoday-api-service
+            port:
+              name: http
