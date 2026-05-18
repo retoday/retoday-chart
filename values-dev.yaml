@@ -1,0 +1,66 @@
+env: dev
+namespace: retoday-dev
+ingressClassName: nginx
+sslAnnotations: &sslAnnotations
+  cert-manager.io/cluster-issuer: letsencrypt
+  nginx.ingress.kubernetes.io/ssl-redirect: "true"
+api:
+  name: retoday-api
+  replicas: 1
+  revisionHistoryLimit: 1
+  image:
+    name: retoday-api
+    tag: latest
+  ingress:
+    host: api.dev.re-today.com
+swagger:
+  enabled: true
+  name: retoday-swagger
+  namespace: swagger
+  docsUrl: https://api.dev.re-today.com/static/docs/api.yaml
+  ingress:
+    host: swagger.dev.re-today.com
+mysql:
+  namespaceOverride: retoday-dev
+  fullnameOverride: retoday-mysql
+  architecture: standalone
+  auth:
+    existingSecret: retoday-mysql-secret
+    database: retoday
+  primary:
+    persistence:
+      size: 8Gi
+    service:
+      ports:
+        mysql: 3306
+redis:
+  namespaceOverride: retoday-dev
+  fullnameOverride: retoday-redis
+  architecture: standalone
+  auth:
+    existingSecret: retoday-redis-secret
+  master:
+    persistence:
+      enabled: false
+prometheus:
+  server:
+    persistentVolume:
+      size: 5Gi
+    retention: 3d
+grafana:
+  namespaceOverride: retoday-dev
+  fullnameOverride: retoday-grafana
+  admin:
+    existingSecret: retoday-grafana-secret
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    annotations: *sslAnnotations
+    hosts:
+    - dev.re-today.com
+    tls:
+    - secretName: retoday-grafana-tls
+      hosts:
+      - grafana.dev.re-today.com
+  persistence:
+    size: 1Gi

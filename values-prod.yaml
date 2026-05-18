@@ -1,0 +1,61 @@
+env: prod
+namespace: retoday-prod
+ingressClassName: nginx
+sslAnnotations: &sslAnnotations
+  cert-manager.io/cluster-issuer: letsencrypt
+  nginx.ingress.kubernetes.io/ssl-redirect: "true"
+api:
+  name: retoday-api
+  containerName: retoday-api
+  replicas: 3
+  revisionHistoryLimit: 5
+  image:
+    name:
+    tag:
+  ingress:
+    host: api.re-today.com
+swagger:
+  enabled: false
+mysql:
+  namespaceOverride: retoday-prod
+  fullnameOverride: retoday-mysql
+  architecture: standalone
+  auth:
+    existingSecret: retoday-mysql-secret
+    database: retoday
+  primary:
+    persistence:
+      size: 30Gi
+    service:
+      ports:
+        mysql: 3306
+redis:
+  namespaceOverride: retoday-prod
+  fullnameOverride: retoday-redis
+  architecture: standalone
+  auth:
+    existingSecret: retoday-redis-secret
+  master:
+    persistence:
+      size: 3Gi
+prometheus:
+  server:
+    persistentVolume:
+      size: 10Gi
+grafana:
+  namespaceOverride: retoday-prod
+  fullnameOverride: retoday-grafana
+  admin:
+    existingSecret: retoday-grafana-secret
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    annotations: *sslAnnotations
+    hosts:
+    - grafana.re-today.com
+    tls:
+    - secretName: retoday-grafana-tls
+      hosts:
+      - grafana.re-today.com
+  persistence:
+    size: 3Gi
