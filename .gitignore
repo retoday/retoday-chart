@@ -1,0 +1,6 @@
+*-secrets.yaml
+charts/
+.idea/
+.vscode/
+.DS_Store
+*~
