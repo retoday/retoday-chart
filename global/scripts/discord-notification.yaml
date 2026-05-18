@@ -1,0 +1,26 @@
+webhook:
+  discord:
+    method: POST
+    body: |
+      {
+        "embeds": [
+          {
+            "title": "{{ .app.metadata.name }} 배포 {{ if eq .app.status.operationState.phase "Running" }}성공{{ end }}{{ if eq .app.status.operationState.phase "Succeeded" }}성공{{ end }}{{ if eq .app.status.operationState.phase "Error" }}실패{{end}}{{ if eq .app.status.operationState.phase "Failed" }}실패{{ end }}",
+            "color": "{{ if eq .app.status.operationState.phase "Running" }} 13949744 {{ end }} {{ if eq .app.status.operationState.phase "Succeeded" }} 13949744 {{ end }} {{ if eq .app.status.operationState.phase "Error" }} 16592173 {{end}} {{ if eq .app.status.operationState.phase "Failed" }} 16592173 {{ end }}",
+            "fields": [{
+              "name": "Sync Status",
+              "value": "{{ .app.status.sync.status }}",
+              "inline": true
+            },
+            {
+              "name": "Health Status",
+              "value": "{{ .app.status.health.status }}",
+              "inline": true
+            },
+            {
+              "name": "Repository",
+              "value": "{{ .app.spec.source.repoURL }}/commit/{{ .app.status.sync.revision }}"
+            }]
+          }
+        ]
+      }
