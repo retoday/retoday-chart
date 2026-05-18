@@ -1,0 +1,27 @@
+{{- if and .Values.swagger.enabled }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Values.swagger.name }}
+  namespace: {{ .Values.swagger.namespace }}
+  labels:
+    app.kubernetes.io/component: swagger
+  annotations: {{- toYaml .Values.sslAnnotations | nindent 4 }}
+spec:
+  ingressClassName: {{ .Values.ingressClassName }}
+  tls:
+  - secretName: retoday-swagger-tls
+    hosts:
+    - {{ .Values.swagger.ingress.host }}
+  rules:
+  - host: {{ .Values.swagger.ingress.host }}
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: {{ .Values.swagger.name }}
+            port:
+              name: http
+{{- end }}

@@ -1,0 +1,17 @@
+{{- if .Values.swagger.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.swagger.name }}
+  namespace: {{ .Values.swagger.namespace }}
+  labels:
+    app.kubernetes.io/component: swagger
+spec:
+  selector:
+    app.kubernetes.io/component: swagger
+  type: ClusterIP
+  ports:
+  - name: http
+    port: 80
+    targetPort: 8080
+{{- end }}

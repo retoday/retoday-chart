@@ -1,0 +1,55 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: {{ .Values.api.name }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app.kubernetes.io/component: api
+spec:
+  replicas: {{ .Values.api.replicas }}
+  revisionHistoryLimit: {{ .Values.api.revisionHistoryLimit }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: api
+  strategy:
+    blueGreen:
+      activeService: retoday-api-service
+      previewService: retoday-api-preview-service
+      autoPromotionEnabled: true
+      scaleDownDelaySeconds: 10
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: api
+    spec:
+      containers:
+      - name: retoday-api
+        image: "{{ .Values.api.image.name }}:{{ .Values.api.image.tag }}"
+        imagePullPolicy: Always
+        ports:
+        - name: http
+          containerPort: 8080
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: {{ .Values.env }}
+        envFrom:
+        - secretRef:
+            name: retoday-api-secret
+        livenessProbe:
+          httpGet:
+            path: /actuator/health/liveness
+            port: http
+          initialDelaySeconds: 45
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 20
+        readinessProbe:
+          httpGet:
+            path: /actuator/health/readiness
+            port: http
+          initialDelaySeconds: 45
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 20
+      imagePullSecrets:
+      - name: docker-secret

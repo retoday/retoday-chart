@@ -1,0 +1,29 @@
+{{- if .Values.swagger.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.swagger.name }}
+  namespace: {{ .Values.swagger.namespace }}
+  labels:
+    app.kubernetes.io/component: swagger
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: swagger
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: swagger
+    spec:
+      containers:
+      - name: swagger-ui
+        image: swaggerapi/swagger-ui:v5.32.6
+        imagePullPolicy: Always
+        ports:
+        - name: http
+          containerPort: 8080
+        env:
+        - name: URL
+          value: {{ .Values.swagger.docsUrl }}
+{{- end }}
