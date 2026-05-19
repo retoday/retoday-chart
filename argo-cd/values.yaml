@@ -1,0 +1,30 @@
+namespace: argo-cd
+argo-cd:
+  crds:
+    keep: true
+  namespaceOverride: argo-cd
+  global:
+    domain: argocd.re-today.com
+  configs:
+    params:
+      server.insecure: true
+    secret:
+      createSecret: false
+  dex:
+    enabled: false
+  server:
+    replicas: 1
+    ingress:
+      enabled: true
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt
+        nginx.ingress.kubernetes.io/backend-protocol: HTTP
+        nginx.ingress.kubernetes.io/ssl-redirect: true
+      ingressClassName: nginx
+      hostname: argocd.re-today.com
+      tls: true
+  notifications:
+    cm:
+      create: false
+    secret:
+      create: false
