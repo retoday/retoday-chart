@@ -8,7 +8,7 @@ api:
   name: retoday-api
   replicas: 1
   revisionHistoryLimit: 1
-  image: re-today.cr.gabiacloud.com/retoday-api:d6b1330361c0daf8b4ad4587a46d9130b786d28a
+  image: re-today.cr.gabiacloud.com/retoday-api:752e800ca21a462ea8a06f10c593b7c2aaa3bfbc
   ingress:
     host: api.dev.re-today.com
 swagger:
@@ -58,10 +58,10 @@ grafana:
     ingressClassName: nginx
     annotations: *sslAnnotations
     hosts:
-    - dev.re-today.com
+      - dev.re-today.com
     tls:
-    - secretName: retoday-grafana-tls
-      hosts:
-      - grafana.dev.re-today.com
+      - secretName: retoday-grafana-tls
+        hosts:
+          - grafana.dev.re-today.com
   persistence:
     size: 1Gi
