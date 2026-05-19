@@ -18,6 +18,9 @@ mysql:
   namespaceOverride: retoday-prod
   fullnameOverride: retoday-mysql
   architecture: standalone
+  image:
+    repository: bitnamilegacy/mysql
+    tag: 9.4.0-debian-12-r0
   auth:
     existingSecret: retoday-mysql-secret
     database: retoday

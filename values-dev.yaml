@@ -22,6 +22,9 @@ mysql:
   namespaceOverride: retoday-dev
   fullnameOverride: retoday-mysql
   architecture: standalone
+  image:
+    repository: bitnamilegacy/mysql
+    tag: 9.4.0-debian-12-r0
   auth:
     existingSecret: retoday-mysql-secret
     database: retoday
@@ -55,10 +58,10 @@ grafana:
     ingressClassName: nginx
     annotations: *sslAnnotations
     hosts:
-      - dev.re-today.com
+    - dev.re-today.com
     tls:
-      - secretName: retoday-grafana-tls
-        hosts:
-          - grafana.dev.re-today.com
+    - secretName: retoday-grafana-tls
+      hosts:
+      - grafana.dev.re-today.com
   persistence:
     size: 1Gi
