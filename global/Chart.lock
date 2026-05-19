@@ -2,14 +2,11 @@ dependencies:
 - name: ingress-nginx
   repository: https://kubernetes.github.io/ingress-nginx
   version: 4.15.1
-- name: argo-cd
-  repository: https://argoproj.github.io/argo-helm
-  version: 7.5.0
 - name: argo-rollouts
   repository: https://argoproj.github.io/argo-helm
   version: 2.40.9
 - name: cert-manager
   repository: https://charts.jetstack.io
   version: v1.20.2
-digest: sha256:a73f2886c8666233c6c6a908046e7d9258c7cb0bf41e12200be316e36a5659de
-generated: "2026-05-18T20:24:45.434832+09:00"
+digest: sha256:b33bb993dab0afecb4442eaba5f296e82e22857a53e5008743336123208725c0
+generated: "2026-05-20T00:39:00.519381+09:00"

@@ -1,0 +1,30 @@
+{{- range .Values.applications }}
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ .name }}
+  namespace: {{ $.Values.namespace }}
+  annotations:
+    helm.sh/hook: post-install,post-upgrade
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: {{ .project | default "default" }}
+  source:
+    repoURL: https://github.com/retoday/retoday-chart
+    targetRevision: main
+    path: {{ .path }}
+    helm:
+      valueFiles:
+      {{- range .valueFiles }}
+      - {{ . }}
+      {{- end }}
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: {{ .namespace }}
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+{{- end }}
