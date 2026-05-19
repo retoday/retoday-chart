@@ -22,4 +22,4 @@ spec:
           service:
             name: {{ .Values.api.name }}
             port:
-              name: http
+              name: api

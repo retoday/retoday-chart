@@ -27,8 +27,10 @@ spec:
         image: {{ .Values.api.image }}
         imagePullPolicy: Always
         ports:
-        - name: http
+        - name: api
           containerPort: 8080
+        - name: actuator
+          containerPort: 8081
         env:
         - name: SPRING_PROFILES_ACTIVE
           value: {{ .Values.env }}
@@ -38,7 +40,7 @@ spec:
         livenessProbe:
           httpGet:
             path: /actuator/health/liveness
-            port: http
+            port: actuator
           initialDelaySeconds: 45
           periodSeconds: 5
           timeoutSeconds: 3
@@ -46,7 +48,7 @@ spec:
         readinessProbe:
           httpGet:
             path: /actuator/health/readiness
-            port: http
+            port: actuator
           initialDelaySeconds: 45
           periodSeconds: 5
           timeoutSeconds: 3
