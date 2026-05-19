@@ -20,6 +20,6 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: retoday-api-service
+            name: {{ .Values.api.name }}
             port:
               name: http

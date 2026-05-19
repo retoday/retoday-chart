@@ -13,8 +13,8 @@ spec:
       app.kubernetes.io/component: api
   strategy:
     blueGreen:
-      activeService: retoday-api-service
-      previewService: retoday-api-preview-service
+      activeService: {{ .Values.api.name }}
+      previewService: {{ .Values.api.name }}-preview
       autoPromotionEnabled: true
       scaleDownDelaySeconds: 10
   template:
