@@ -28,3 +28,19 @@ argo-cd:
       create: false
     secret:
       create: false
+applications:
+- name: retoday-global
+  namespace: retoday-global
+  path: global
+  valueFiles:
+  - values.yaml
+- name: retoday-dev
+  namespace: retoday-dev
+  path: .
+  valueFiles:
+  - values-dev.yaml
+- name: retoday-prod
+  namespace: retoday-prod
+  path: .
+  valueFiles:
+  - values-prod.yaml
