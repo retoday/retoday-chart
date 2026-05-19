@@ -9,8 +9,6 @@ api:
   replicas: 1
   revisionHistoryLimit: 1
   image:
-    name: retoday-api
-    tag: latest
   ingress:
     host: api.dev.re-today.com
 swagger:

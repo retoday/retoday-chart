@@ -10,8 +10,6 @@ api:
   replicas: 3
   revisionHistoryLimit: 5
   image:
-    name:
-    tag:
   ingress:
     host: api.re-today.com
 swagger:
