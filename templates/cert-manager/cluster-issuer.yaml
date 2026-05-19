@@ -1,0 +1,14 @@
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: {{ index .Values "cert-manager" "issuer" "name" }}
+spec:
+  acme:
+    email: admin@re-today.com
+    server: {{ index .Values "cert-manager" "acme" "server" }}
+    privateKeySecretRef:
+      name: {{ index .Values "cert-manager" "issuer" "name" }}
+    solvers:
+    - http01:
+        ingress:
+          class: {{ .Values.ingressClassName }}

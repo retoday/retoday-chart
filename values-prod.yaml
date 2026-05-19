@@ -1,9 +1,6 @@
 env: prod
 namespace: retoday-prod
 ingressClassName: nginx
-sslAnnotations: &sslAnnotations
-  cert-manager.io/cluster-issuer: letsencrypt
-  nginx.ingress.kubernetes.io/ssl-redirect: "true"
 api:
   name: retoday-api
   containerName: retoday-api
@@ -51,7 +48,9 @@ grafana:
   ingress:
     enabled: true
     ingressClassName: nginx
-    annotations: *sslAnnotations
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt
+      nginx.ingress.kubernetes.io/ssl-redirect: "true"
     hosts:
     - grafana.re-today.com
     tls:
@@ -60,3 +59,11 @@ grafana:
       - grafana.re-today.com
   persistence:
     size: 3Gi
+cert-manager:
+  issuer:
+    name: letsencrypt
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+  sslAnnotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"

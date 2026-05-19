@@ -6,7 +6,7 @@ metadata:
   namespace: {{ .Values.swagger.namespace }}
   labels:
     app.kubernetes.io/component: swagger
-  annotations: {{- toYaml .Values.sslAnnotations | nindent 4 }}
+  annotations: {{- toYaml (index .Values "cert-manager" "sslAnnotations") | nindent 4 }}
 spec:
   ingressClassName: {{ .Values.ingressClassName }}
   tls:
