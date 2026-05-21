@@ -5,7 +5,9 @@ metadata:
   namespace: {{ .Values.namespace }}
   labels:
     app.kubernetes.io/component: api
-  annotations: {{- toYaml (index .Values "cert-manager" "sslAnnotations") | nindent 4 }}
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
 spec:
   ingressClassName: {{ .Values.ingressClassName }}
   tls:

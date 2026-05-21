@@ -1,4 +1,3 @@
-{{- if .Values.swagger.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -26,4 +25,3 @@ spec:
         env:
         - name: URL
           value: {{ .Values.swagger.docsUrl }}
-{{- end }}
