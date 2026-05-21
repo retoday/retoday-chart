@@ -2,6 +2,3 @@ apiVersion: v1
 kind: Namespace
 metadata:
   name: {{ index .Values "argo-rollouts" "namespaceOverride" }}
-  annotations:
-    helm.sh/hook: pre-install
-    helm.sh/hook-weight: "-1"
