@@ -34,9 +34,13 @@ spec:
         env:
         - name: SPRING_PROFILES_ACTIVE
           value: {{ .Values.env }}
+        - name: SENTRY_RELEASE
+          value: {{ splitList ":" .Values.api.image | last }}
         envFrom:
         - secretRef:
             name: retoday-api-secret
+        resources:
+          {{- toYaml .Values.api.resources | nindent 10 }}
         livenessProbe:
           httpGet:
             path: /actuator/health/liveness

@@ -5,9 +5,16 @@ api:
   name: retoday-api
   replicas: 1
   revisionHistoryLimit: 1
-  image: re-today.cr.gabiacloud.com/retoday-api:752e800ca21a462ea8a06f10c593b7c2aaa3bfbc
+  image: re-today.cr.gabiacloud.com/retoday-api:a8c137dbc8c45acbd208ab68a2004491aa93215e
   ingress:
     host: api.dev.re-today.com
+  resources:
+    requests:
+      cpu: 100m
+      memory: 512Mi
+    limits:
+      cpu: 500m
+      memory: 1Gi
 mysql:
   namespaceOverride: retoday-dev
   fullnameOverride: retoday-mysql
@@ -20,10 +27,17 @@ mysql:
     database: retoday
   primary:
     persistence:
-      size: 8Gi
+      size: 2Gi
     service:
       ports:
         mysql: 3306
+    resources:
+      requests:
+        cpu: 100m
+        memory: 512Mi
+      limits:
+        cpu: 500m
+        memory: 1Gi
 redis:
   namespaceOverride: retoday-dev
   fullnameOverride: retoday-redis
@@ -33,30 +47,13 @@ redis:
   master:
     persistence:
       enabled: false
-prometheus:
-  server:
-    persistentVolume:
-      size: 5Gi
-    retention: 3d
-grafana:
-  namespaceOverride: retoday-dev
-  fullnameOverride: retoday-grafana
-  admin:
-    existingSecret: retoday-grafana-secret
-  ingress:
-    enabled: true
-    ingressClassName: nginx
-    annotations:
-      cert-manager.io/cluster-issuer: letsencrypt-staging
-      nginx.ingress.kubernetes.io/ssl-redirect: "true"
-    hosts:
-    - dev.re-today.com
-    tls:
-    - secretName: retoday-grafana-tls
-      hosts:
-      - grafana.dev.re-today.com
-  persistence:
-    size: 1Gi
+    resources:
+      requests:
+        cpu: 50m
+        memory: 128Mi
+      limits:
+        cpu: 250m
+        memory: 256Mi
 cert-manager:
   issuer:
     name: letsencrypt-staging

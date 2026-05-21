@@ -8,5 +8,17 @@ dependencies:
 - name: cert-manager
   repository: https://charts.jetstack.io
   version: v1.20.2
-digest: sha256:b33bb993dab0afecb4442eaba5f296e82e22857a53e5008743336123208725c0
-generated: "2026-05-20T00:39:00.519381+09:00"
+- name: prometheus
+  repository: https://prometheus-community.github.io/helm-charts
+  version: 29.6.0
+- name: grafana
+  repository: https://grafana-community.github.io/helm-charts
+  version: 12.3.2
+- name: loki
+  repository: https://grafana.github.io/helm-charts
+  version: 7.0.0
+- name: promtail
+  repository: https://grafana.github.io/helm-charts
+  version: 6.17.1
+digest: sha256:3db92b8e445a69c000b306d632973fb328772e450f930a05ea6d57b0374cb3b6
+generated: "2026-05-20T23:23:55.602679+09:00"
