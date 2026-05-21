@@ -9,8 +9,6 @@ api:
   image:
   ingress:
     host: api.re-today.com
-swagger:
-  enabled: false
 mysql:
   namespaceOverride: retoday-prod
   fullnameOverride: retoday-mysql

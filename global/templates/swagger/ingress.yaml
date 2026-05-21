@@ -1,4 +1,3 @@
-{{- if .Values.swagger.enabled }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -6,11 +5,13 @@ metadata:
   namespace: {{ .Values.swagger.namespace }}
   labels:
     app.kubernetes.io/component: swagger
-  annotations: {{- toYaml (index .Values "cert-manager" "sslAnnotations") | nindent 4 }}
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
 spec:
-  ingressClassName: {{ .Values.ingressClassName }}
+  ingressClassName: {{ index .Values "ingress-nginx" "controller" "ingressClass" }}
   tls:
-  - secretName: retoday-swagger-tls
+  - secretName: swagger-tls
     hosts:
     - {{ .Values.swagger.ingress.host }}
   rules:
@@ -24,4 +25,3 @@ spec:
             name: {{ .Values.swagger.name }}
             port:
               name: http
-{{- end }}

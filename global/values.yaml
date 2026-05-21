@@ -23,3 +23,9 @@ argo-rollouts:
     replicas: 1
   dashboard:
     enabled: false
+swagger:
+  name: swagger
+  namespace: swagger
+  docsUrl: https://api.dev.re-today.com/docs/api.yaml
+  ingress:
+    host: swagger.re-today.com

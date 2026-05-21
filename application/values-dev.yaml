@@ -8,13 +8,6 @@ api:
   image: re-today.cr.gabiacloud.com/retoday-api:752e800ca21a462ea8a06f10c593b7c2aaa3bfbc
   ingress:
     host: api.dev.re-today.com
-swagger:
-  enabled: true
-  name: retoday-swagger
-  namespace: swagger
-  docsUrl: https://api.dev.re-today.com/static/docs/api.yaml
-  ingress:
-    host: swagger.dev.re-today.com
 mysql:
   namespaceOverride: retoday-dev
   fullnameOverride: retoday-mysql
