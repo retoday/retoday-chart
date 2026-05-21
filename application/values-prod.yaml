@@ -62,6 +62,3 @@ cert-manager:
     name: letsencrypt
   acme:
     server: https://acme-v02.api.letsencrypt.org/directory
-  sslAnnotations:
-    cert-manager.io/cluster-issuer: letsencrypt
-    nginx.ingress.kubernetes.io/ssl-redirect: "true"
