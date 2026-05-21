@@ -9,6 +9,12 @@ api:
   image:
   ingress:
     host: api.re-today.com
+  resources:
+    requests:
+      cpu: 250m
+      memory: 1Gi
+    limits:
+      memory: 2Gi
 mysql:
   namespaceOverride: retoday-prod
   fullnameOverride: retoday-mysql
@@ -21,10 +27,16 @@ mysql:
     database: retoday
   primary:
     persistence:
-      size: 30Gi
+      size: 15Gi
     service:
       ports:
         mysql: 3306
+  resources:
+    requests:
+      cpu: 250m
+      memory: 1Gi
+    limits:
+      memory: 2Gi
 redis:
   namespaceOverride: retoday-prod
   fullnameOverride: retoday-redis
@@ -33,7 +45,13 @@ redis:
     existingSecret: retoday-redis-secret
   master:
     persistence:
-      size: 3Gi
+      size: 2Gi
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        memory: 512Mi
 prometheus:
   server:
     persistentVolume:

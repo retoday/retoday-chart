@@ -37,6 +37,8 @@ spec:
         envFrom:
         - secretRef:
             name: retoday-api-secret
+        resources:
+          {{- toYaml .Values.api.resources | nindent 10 }}
         livenessProbe:
           httpGet:
             path: /actuator/health/liveness

@@ -8,6 +8,13 @@ api:
   image: re-today.cr.gabiacloud.com/retoday-api:752e800ca21a462ea8a06f10c593b7c2aaa3bfbc
   ingress:
     host: api.dev.re-today.com
+  resources:
+    requests:
+      cpu: 100m
+      memory: 512Mi
+    limits:
+      cpu: 500m
+      memory: 1Gi
 mysql:
   namespaceOverride: retoday-dev
   fullnameOverride: retoday-mysql
@@ -20,10 +27,17 @@ mysql:
     database: retoday
   primary:
     persistence:
-      size: 8Gi
+      size: 2Gi
     service:
       ports:
         mysql: 3306
+    resources:
+      requests:
+        cpu: 100m
+        memory: 512Mi
+      limits:
+        cpu: 500m
+        memory: 1Gi
 redis:
   namespaceOverride: retoday-dev
   fullnameOverride: retoday-redis
@@ -33,6 +47,13 @@ redis:
   master:
     persistence:
       enabled: false
+    resources:
+      requests:
+        cpu: 50m
+        memory: 128Mi
+      limits:
+        cpu: 250m
+        memory: 256Mi
 prometheus:
   server:
     persistentVolume:
