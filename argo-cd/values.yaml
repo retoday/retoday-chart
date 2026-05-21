@@ -36,11 +36,11 @@ applications:
   - values.yaml
 - name: retoday-dev
   namespace: retoday-dev
-  path: .
+  path: application
   valueFiles:
   - values-dev.yaml
 - name: retoday-prod
   namespace: retoday-prod
-  path: .
+  path: application
   valueFiles:
   - values-prod.yaml

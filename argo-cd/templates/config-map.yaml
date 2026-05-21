@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: argocd-notifications-cm
-  namespace: {{ index .Values "argo-cd" "namespaceOverride" }}
+  namespace: {{ .Values.namespace }}
 data:
   service.webhook.discord: |
     url: $discord-url
@@ -12,4 +12,4 @@ data:
   trigger.sync-operation-change: |
     - when: app.status.operationState.phase in ['Running', 'Succeeded', 'Error', 'Failed']
       send: [notification]
-  template.notification: {{ .Files.Get "scirpts/discord-notification.yaml" | quote }}
+  template.notification: {{ .Files.Get "scripts/discord-notification.yaml" | quote }}
