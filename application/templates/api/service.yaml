@@ -3,6 +3,10 @@ kind: Service
 metadata:
   name: {{ .Values.api.name }}
   namespace: {{ .Values.namespace }}
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/path: /actuator/prometheus
+    prometheus.io/port: "8081"
 spec:
   selector:
     app.kubernetes.io/component: api
