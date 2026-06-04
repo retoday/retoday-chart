@@ -5,7 +5,7 @@ api:
   name: retoday-api
   replicas: 1
   revisionHistoryLimit: 1
-  image: re-today.cr.gabiacloud.com/retoday-api:14958b71a166c7841fa0e9d4969fcb7aa045d2b3
+  image: re-today.cr.gabiacloud.com/retoday-api:5488146fa2f86eda793e97999affcd9b07f96cd7
   ingress:
     host: api.dev.re-today.com
   resources:
