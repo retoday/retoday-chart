@@ -10,6 +10,7 @@ data:
     - name: Content-Type
       value: application/json
   trigger.sync-operation-change: |
-    - when: app.status.operationState.phase in ['Running', 'Succeeded', 'Error', 'Failed']
+    - when: app.status.operationState != nil && app.status.operationState.syncResult != nil && app.status.operationState.syncResult.revision == app.status.sync.revision && ((app.status.operationState.phase == 'Succeeded' && app.status.health.status in ['Healthy', 'Degraded']) || app.status.operationState.phase in ['Error', 'Failed'])
+      oncePer: app.status.operationState.finishedAt
       send: [notification]
   template.notification: {{ .Files.Get "scripts/discord-notification.yaml" | quote }}
