@@ -5,6 +5,8 @@ kind: Application
 metadata:
   name: {{ .name }}
   namespace: {{ $.Values.namespace }}
+  annotations:
+    notifications.argoproj.io/subscribe.sync-operation-change.discord: ""
   finalizers:
   - resources-finalizer.argocd.argoproj.io
 spec:
