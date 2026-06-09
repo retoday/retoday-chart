@@ -5,7 +5,7 @@ api:
   name: retoday-api
   replicas: 1
   revisionHistoryLimit: 1
-  image: re-today.cr.gabiacloud.com/retoday-api:f49bbd0dc645d105db7ae1936eeb7fe2e997888a
+  image: re-today.cr.gabiacloud.com/retoday-api:32a25e54c87be2038e60baa9b30c8f944e0ba235
   ingress:
     host: api.dev.re-today.com
   resources:
@@ -59,3 +59,5 @@ cert-manager:
     name: letsencrypt-staging
   acme:
     server: https://acme-staging-v02.api.letsencrypt.org/directory
+batch:
+  image: re-today.cr.gabiacloud.com/retoday-batch:32a25e54c87be2038e60baa9b30c8f944e0ba235
