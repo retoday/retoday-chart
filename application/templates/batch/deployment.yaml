@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.batch.name }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app.kubernetes.io/component: batch
+spec:
+  replicas: {{ .Values.batch.replicas }}
+  revisionHistoryLimit: {{ .Values.batch.revisionHistoryLimit }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: batch
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: batch
+    spec:
+      containers:
+      - name: retoday-batch
+        image: {{ .Values.batch.image }}
+        imagePullPolicy: Always
+        ports:
+        - name: actuator
+          containerPort: 8081
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: {{ .Values.env }}
+        envFrom:
+        - secretRef:
+            name: retoday-secret
+        resources:
+          {{ toYaml .Values.batch.resources | nindent 10 }}
+        livenessProbe:
+          httpGet:
+            path: /actuator/health/liveness
+            port: actuator
+          initialDelaySeconds: 45
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 20
+      imagePullSecrets:
+      - name: docker-secret

@@ -15,6 +15,18 @@ api:
       memory: 1Gi
     limits:
       memory: 2Gi
+batch:
+  name: retoday-batch
+  replicas: 1
+  revisionHistoryLimit: 5
+  image:
+  resources:
+    requests:
+      cpu: 100m
+      memory: 512Mi
+    limits:
+      cpu: 500m
+      memory: 1Gi
 mysql:
   namespaceOverride: retoday-prod
   fullnameOverride: retoday-mysql

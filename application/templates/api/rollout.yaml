@@ -38,9 +38,9 @@ spec:
           value: {{ splitList ":" .Values.api.image | last }}
         envFrom:
         - secretRef:
-            name: retoday-api-secret
+            name: retoday-secret
         resources:
-          {{- toYaml .Values.api.resources | nindent 10 }}
+          {{ toYaml .Values.api.resources | nindent 10 }}
         livenessProbe:
           httpGet:
             path: /actuator/health/liveness
