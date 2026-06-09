@@ -15,6 +15,18 @@ api:
     limits:
       cpu: 500m
       memory: 1Gi
+batch:
+  name: retoday-batch
+  replicas: 0
+  revisionHistoryLimit: 1
+  image:
+  resources:
+    requests:
+      cpu: 50m
+      memory: 256Mi
+    limits:
+      cpu: 250m
+      memory: 512Mi
 mysql:
   namespaceOverride: retoday-dev
   fullnameOverride: retoday-mysql
@@ -59,5 +71,3 @@ cert-manager:
     name: letsencrypt-staging
   acme:
     server: https://acme-staging-v02.api.letsencrypt.org/directory
-batch:
-  image: re-today.cr.gabiacloud.com/retoday-batch:32a25e54c87be2038e60baa9b30c8f944e0ba235
