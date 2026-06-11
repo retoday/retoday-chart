@@ -51,6 +51,8 @@ mysql:
       memory: 2Gi
   metrics:
     enabled: true
+    image:
+      repository: bitnamilegacy/mysqld-exporter
     service:
       annotations:
         prometheus.io/scrape: "true"
@@ -79,6 +81,8 @@ redis:
         memory: 512Mi
   metrics:
     enabled: true
+    image:
+      repository: bitnamilegacy/redis-exporter
     service:
       annotations:
         prometheus.io/scrape: "true"
