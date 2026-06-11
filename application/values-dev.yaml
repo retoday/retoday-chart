@@ -19,7 +19,7 @@ batch:
   name: retoday-batch
   replicas: 0
   revisionHistoryLimit: 1
-  image: "re-today.cr.gabiacloud.com/retoday-batch:b8c42d291f521fecee901eb6d840483226d6da57"
+  image: re-today.cr.gabiacloud.com/retoday-batch:b8c42d291f521fecee901eb6d840483226d6da57
   resources:
     requests:
       cpu: 50m
