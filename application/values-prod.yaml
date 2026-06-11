@@ -19,7 +19,7 @@ batch:
   name: retoday-batch
   replicas: 1
   revisionHistoryLimit: 5
-  image:
+  image: re-today.cr.gabiacloud.com/retoday-batch:d6b1330361c0daf8b4ad4587a46d9130b786d28a
   resources:
     requests:
       cpu: 100m
@@ -49,6 +49,19 @@ mysql:
       memory: 1Gi
     limits:
       memory: 2Gi
+  metrics:
+    enabled: true
+    service:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9104"
+    resources:
+      requests:
+        cpu: 20m
+        memory: 64Mi
+      limits:
+        cpu: 100m
+        memory: 128Mi
 redis:
   namespaceOverride: retoday-prod
   fullnameOverride: retoday-redis
@@ -64,6 +77,19 @@ redis:
         memory: 256Mi
       limits:
         memory: 512Mi
+  metrics:
+    enabled: true
+    service:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9121"
+    resources:
+      requests:
+        cpu: 20m
+        memory: 64Mi
+      limits:
+        cpu: 100m
+        memory: 128Mi
 cert-manager:
   issuer:
     name: letsencrypt

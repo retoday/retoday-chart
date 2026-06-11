@@ -19,7 +19,7 @@ batch:
   name: retoday-batch
   replicas: 0
   revisionHistoryLimit: 1
-  image: "re-today.cr.gabiacloud.com/retoday-batch:b8c42d291f521fecee901eb6d840483226d6da57"
+  image: re-today.cr.gabiacloud.com/retoday-batch:b8c42d291f521fecee901eb6d840483226d6da57
   resources:
     requests:
       cpu: 50m
@@ -50,6 +50,19 @@ mysql:
       limits:
         cpu: 500m
         memory: 1Gi
+  metrics:
+    enabled: true
+    service:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9104"
+    resources:
+      requests:
+        cpu: 20m
+        memory: 64Mi
+      limits:
+        cpu: 100m
+        memory: 128Mi
 redis:
   namespaceOverride: retoday-dev
   fullnameOverride: retoday-redis
@@ -66,6 +79,19 @@ redis:
       limits:
         cpu: 250m
         memory: 256Mi
+  metrics:
+    enabled: true
+    service:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9121"
+    resources:
+      requests:
+        cpu: 20m
+        memory: 64Mi
+      limits:
+        cpu: 100m
+        memory: 128Mi
 cert-manager:
   issuer:
     name: letsencrypt-staging
