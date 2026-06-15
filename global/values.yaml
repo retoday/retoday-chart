@@ -154,6 +154,21 @@ grafana:
         uid: loki
         access: proxy
         url: http://retoday-global-loki-gateway.loki.svc.cluster.local
+  dashboardProviders:
+    dashboardproviders.yaml:
+      apiVersion: 1
+      providers:
+      - name: retoday
+        orgId: 1
+        folder: Retoday
+        folderUid: retoday
+        type: file
+        disableDeletion: false
+        allowUiUpdates: true
+        options:
+          path: /var/lib/grafana/dashboards/retoday
+  dashboardsConfigMaps:
+    retoday: grafana-dashboard-cm
   ingress:
     enabled: true
     ingressClassName: nginx
