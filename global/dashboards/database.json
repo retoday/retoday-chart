@@ -21,6 +21,19 @@
   "liveNow": false,
   "panels": [
     {
+      "id": 100,
+      "type": "row",
+      "title": "MySQL",
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "panels": []
+    },
+    {
       "datasource": {
         "type": "prometheus",
         "uid": "prometheus"
@@ -59,9 +72,9 @@
       },
       "gridPos": {
         "h": 4,
-        "w": 6,
+        "w": 8,
         "x": 0,
-        "y": 0
+        "y": 1
       },
       "id": 1,
       "options": {
@@ -103,82 +116,6 @@
       },
       "fieldConfig": {
         "defaults": {
-          "mappings": [
-            {
-              "options": {
-                "0": {
-                  "color": "red",
-                  "text": "DOWN"
-                },
-                "1": {
-                  "color": "green",
-                  "text": "UP"
-                }
-              },
-              "type": "value"
-            }
-          ],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "red",
-                "value": 0
-              },
-              {
-                "color": "green",
-                "value": 1
-              }
-            ]
-          }
-        }
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 6,
-        "x": 6,
-        "y": 0
-      },
-      "id": 2,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "textMode": "auto",
-        "wideLayout": true
-      },
-      "pluginVersion": "13.0.1+security-01",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "expr": "redis_up{namespace=\"$namespace\",service=\"retoday-redis-metrics\"}",
-          "legendFormat": "redis",
-          "refId": "A"
-        }
-      ],
-      "title": "Redis Up",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "prometheus"
-      },
-      "fieldConfig": {
-        "defaults": {
           "decimals": 2,
           "thresholds": {
             "mode": "absolute",
@@ -198,9 +135,9 @@
       },
       "gridPos": {
         "h": 4,
-        "w": 6,
-        "x": 12,
-        "y": 0
+        "w": 8,
+        "x": 8,
+        "y": 1
       },
       "id": 3,
       "options": {
@@ -242,7 +179,43 @@
       },
       "fieldConfig": {
         "defaults": {
-          "decimals": 2,
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 8,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -255,33 +228,34 @@
                 "value": 80
               }
             ]
-          },
-          "unit": "ops"
+          }
         }
       },
       "gridPos": {
         "h": 4,
-        "w": 6,
-        "x": 18,
-        "y": 0
+        "w": 8,
+        "x": 16,
+        "y": 1
       },
-      "id": 4,
+      "id": 7,
       "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
+        "annotations": {
+          "clustering": -1,
+          "multiLane": false
+        },
+        "legend": {
           "calcs": [
             "lastNotNull"
           ],
-          "fields": "",
-          "values": false
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
         },
-        "showPercentChange": false,
-        "textMode": "auto",
-        "wideLayout": true
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
       },
       "pluginVersion": "13.0.1+security-01",
       "targets": [
@@ -290,13 +264,31 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "rate(redis_commands_processed_total{namespace=\"$namespace\",service=\"retoday-redis-metrics\"}[5m])",
-          "legendFormat": "commands/sec",
+          "expr": "mysql_global_status_threads_connected{namespace=\"$namespace\",service=\"retoday-mysql-metrics\"}",
+          "legendFormat": "threads connected",
           "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "rate(mysql_global_status_connections{namespace=\"$namespace\",service=\"retoday-mysql-metrics\"}[5m])",
+          "legendFormat": "connections/sec",
+          "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "rate(mysql_global_status_aborted_connects{namespace=\"$namespace\",service=\"retoday-mysql-metrics\"}[5m])",
+          "legendFormat": "aborted connects/sec",
+          "refId": "C"
         }
       ],
-      "title": "Redis Commands/sec",
-      "type": "stat"
+      "title": "MySQL Connections",
+      "type": "timeseries"
     },
     {
       "datasource": {
@@ -361,7 +353,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 4
+        "y": 5
       },
       "id": 5,
       "options": {
@@ -479,7 +471,379 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 4
+        "y": 5
+      },
+      "id": 10,
+      "options": {
+        "annotations": {
+          "clustering": -1,
+          "multiLane": false
+        },
+        "legend": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "13.0.1+security-01",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "mysql_global_status_buffer_pool_pages{namespace=\"$namespace\",service=\"retoday-mysql-metrics\",state=\"data\"}",
+          "legendFormat": "data pages",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "mysql_global_status_buffer_pool_pages{namespace=\"$namespace\",service=\"retoday-mysql-metrics\",state=\"free\"}",
+          "legendFormat": "free pages",
+          "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "mysql_global_status_buffer_pool_dirty_pages{namespace=\"$namespace\",service=\"retoday-mysql-metrics\"}",
+          "legendFormat": "dirty pages",
+          "refId": "C"
+        }
+      ],
+      "title": "MySQL InnoDB Buffer Pool",
+      "type": "timeseries"
+    },
+    {
+      "id": 101,
+      "type": "row",
+      "title": "Redis",
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 13
+      },
+      "panels": []
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "color": "red",
+                  "text": "DOWN"
+                },
+                "1": {
+                  "color": "green",
+                  "text": "UP"
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": 0
+              },
+              {
+                "color": "green",
+                "value": 1
+              }
+            ]
+          }
+        }
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 8,
+        "x": 0,
+        "y": 14
+      },
+      "id": 2,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "13.0.1+security-01",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "redis_up{namespace=\"$namespace\",service=\"retoday-redis-metrics\"}",
+          "legendFormat": "redis",
+          "refId": "A"
+        }
+      ],
+      "title": "Redis Up",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "decimals": 2,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "ops"
+        }
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 8,
+        "x": 8,
+        "y": 14
+      },
+      "id": 4,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "13.0.1+security-01",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "rate(redis_commands_processed_total{namespace=\"$namespace\",service=\"retoday-redis-metrics\"}[5m])",
+          "legendFormat": "commands/sec",
+          "refId": "A"
+        }
+      ],
+      "title": "Redis Commands/sec",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 8,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percent"
+        }
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 8,
+        "x": 16,
+        "y": 14
+      },
+      "id": 9,
+      "options": {
+        "annotations": {
+          "clustering": -1,
+          "multiLane": false
+        },
+        "legend": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "13.0.1+security-01",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "100 * rate(redis_keyspace_hits_total{namespace=\"$namespace\",service=\"retoday-redis-metrics\"}[5m]) / (rate(redis_keyspace_hits_total{namespace=\"$namespace\",service=\"retoday-redis-metrics\"}[5m]) + rate(redis_keyspace_misses_total{namespace=\"$namespace\",service=\"retoday-redis-metrics\"}[5m]))",
+          "legendFormat": "hit ratio",
+          "refId": "A"
+        }
+      ],
+      "title": "Redis Hit Ratio",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 8,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        }
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 18
       },
       "id": 6,
       "options": {
@@ -590,124 +954,6 @@
                 "value": 80
               }
             ]
-          }
-        }
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 12
-      },
-      "id": 7,
-      "options": {
-        "annotations": {
-          "clustering": -1,
-          "multiLane": false
-        },
-        "legend": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "multi",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "13.0.1+security-01",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "expr": "mysql_global_status_threads_connected{namespace=\"$namespace\",service=\"retoday-mysql-metrics\"}",
-          "legendFormat": "threads connected",
-          "refId": "A"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "expr": "rate(mysql_global_status_connections{namespace=\"$namespace\",service=\"retoday-mysql-metrics\"}[5m])",
-          "legendFormat": "connections/sec",
-          "refId": "B"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "expr": "rate(mysql_global_status_aborted_connects{namespace=\"$namespace\",service=\"retoday-mysql-metrics\"}[5m])",
-          "legendFormat": "aborted connects/sec",
-          "refId": "C"
-        }
-      ],
-      "title": "MySQL Connections",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "prometheus"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 8,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "showValues": false,
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
           },
           "unit": "bytes"
         }
@@ -716,7 +962,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 12
+        "y": 18
       },
       "id": 8,
       "options": {
@@ -761,233 +1007,12 @@
       ],
       "title": "Redis Memory",
       "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "prometheus"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 8,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "showValues": false,
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "decimals": 2,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "percent"
-        }
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 20
-      },
-      "id": 9,
-      "options": {
-        "annotations": {
-          "clustering": -1,
-          "multiLane": false
-        },
-        "legend": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "multi",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "13.0.1+security-01",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "expr": "100 * rate(redis_keyspace_hits_total{namespace=\"$namespace\",service=\"retoday-redis-metrics\"}[5m]) / (rate(redis_keyspace_hits_total{namespace=\"$namespace\",service=\"retoday-redis-metrics\"}[5m]) + rate(redis_keyspace_misses_total{namespace=\"$namespace\",service=\"retoday-redis-metrics\"}[5m]))",
-          "legendFormat": "hit ratio",
-          "refId": "A"
-        }
-      ],
-      "title": "Redis Hit Ratio",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "prometheus"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 8,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "showValues": false,
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        }
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 20
-      },
-      "id": 10,
-      "options": {
-        "annotations": {
-          "clustering": -1,
-          "multiLane": false
-        },
-        "legend": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "multi",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "13.0.1+security-01",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "expr": "mysql_global_status_buffer_pool_pages{namespace=\"$namespace\",service=\"retoday-mysql-metrics\",state=\"data\"}",
-          "legendFormat": "data pages",
-          "refId": "A"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "expr": "mysql_global_status_buffer_pool_pages{namespace=\"$namespace\",service=\"retoday-mysql-metrics\",state=\"free\"}",
-          "legendFormat": "free pages",
-          "refId": "B"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "expr": "mysql_global_status_buffer_pool_dirty_pages{namespace=\"$namespace\",service=\"retoday-mysql-metrics\"}",
-          "legendFormat": "dirty pages",
-          "refId": "C"
-        }
-      ],
-      "title": "MySQL InnoDB Buffer Pool",
-      "type": "timeseries"
     }
   ],
   "preload": false,
   "refresh": "30s",
   "schemaVersion": 42,
   "tags": [
-    "retoday",
     "mysql",
     "redis"
   ],
@@ -1042,6 +1067,6 @@
     ]
   },
   "timezone": "browser",
-  "title": "Retoday Database",
-  "uid": "retoday-mysql-redis"
+  "title": "Database",
+  "uid": "retoday-database"
 }

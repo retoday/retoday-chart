@@ -139,6 +139,9 @@ grafana:
   namespaceOverride: grafana
   admin:
     existingSecret: grafana-secret
+  grafana.ini:
+    dashboards:
+      default_home_dashboard_path: /var/lib/grafana/dashboards/retoday/api.json
   datasources:
     datasources.yaml:
       apiVersion: 1
