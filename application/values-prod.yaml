@@ -18,7 +18,6 @@ api:
 batch:
   name: retoday-batch
   image: re-today.cr.gabiacloud.com/retoday-batch:d6b1330361c0daf8b4ad4587a46d9130b786d28a
-  secretName: retoday-secret
   resources:
     requests:
       cpu: 100m
