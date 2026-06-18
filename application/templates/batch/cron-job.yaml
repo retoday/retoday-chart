@@ -10,6 +10,7 @@ metadata:
 spec:
   schedule: {{ .schedule }}
   timeZone: {{ .timeZone }}
+  suspend: {{ .suspend | default false }}
   concurrencyPolicy: {{ .concurrencyPolicy | default "Forbid" }}
   successfulJobsHistoryLimit: {{ .successfulJobsHistoryLimit | default 1 }}
   failedJobsHistoryLimit: {{ .failedJobsHistoryLimit | default 3 }}

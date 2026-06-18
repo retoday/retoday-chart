@@ -30,12 +30,14 @@ batch:
     jobName: generateRecapJob
     schedule: "0 0 * * *"
     timeZone: Asia/Seoul
+    suspend: true
     parameters:
       timeZone: SEOUL
   - name: generate-recap-pacific
     jobName: generateRecapJob
     schedule: "0 0 * * *"
     timeZone: America/Los_Angeles
+    suspend: true
     parameters:
       timeZone: PACIFIC
 mysql:
