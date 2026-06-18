@@ -1044,9 +1044,7 @@
   "refresh": "30s",
   "schemaVersion": 42,
   "tags": [
-    "retoday",
-    "kubernetes",
-    "cluster"
+    "kubernetes"
   ],
   "templating": {
     "list": [
@@ -1097,6 +1095,6 @@
     ]
   },
   "timezone": "browser",
-  "title": "Retoday Cluster",
-  "uid": "retoday-cluster-resources"
+  "title": "Cluster",
+  "uid": "retoday-cluster"
 }
