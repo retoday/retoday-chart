@@ -17,9 +17,8 @@ api:
       memory: 2Gi
 batch:
   name: retoday-batch
-  replicas: 1
-  revisionHistoryLimit: 5
   image: re-today.cr.gabiacloud.com/retoday-batch:d6b1330361c0daf8b4ad4587a46d9130b786d28a
+  secretName: retoday-secret
   resources:
     requests:
       cpu: 100m
@@ -27,6 +26,19 @@ batch:
     limits:
       cpu: 500m
       memory: 1Gi
+  jobs:
+  - name: generate-recap-seoul
+    jobName: generateRecapJob
+    schedule: "0 0 * * *"
+    timeZone: Asia/Seoul
+    parameters:
+      timeZone: SEOUL
+  - name: generate-recap-pacific
+    jobName: generateRecapJob
+    schedule: "0 0 * * *"
+    timeZone: America/Los_Angeles
+    parameters:
+      timeZone: PACIFIC
 mysql:
   namespaceOverride: retoday-prod
   fullnameOverride: retoday-mysql

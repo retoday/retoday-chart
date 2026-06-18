@@ -27,6 +27,19 @@ batch:
     limits:
       cpu: 250m
       memory: 512Mi
+  jobs:
+  - name: generate-recap-seoul
+    jobName: generateRecapJob
+    schedule: "0 0 * * *"
+    timeZone: Asia/Seoul
+    parameters:
+      timeZone: SEOUL
+  - name: generate-recap-pacific
+    jobName: generateRecapJob
+    schedule: "0 0 * * *"
+    timeZone: America/Los_Angeles
+    parameters:
+      timeZone: PACIFIC
 mysql:
   namespaceOverride: retoday-dev
   fullnameOverride: retoday-mysql
