@@ -5,7 +5,7 @@ metadata:
   namespace: {{ .Values.namespace }}
 data:
   service.webhook.discord: |
-    url: $discord-url
+    url: $discord-webhook-url
     headers:
     - name: Content-Type
       value: application/json
@@ -13,4 +13,4 @@ data:
     - when: app.status.operationState != nil && app.status.operationState.syncResult != nil && app.status.operationState.syncResult.revision == app.status.sync.revision && ((app.status.operationState.phase == 'Succeeded' && app.status.health.status in ['Healthy', 'Degraded']) || app.status.operationState.phase in ['Error', 'Failed'])
       oncePer: app.status.operationState.finishedAt
       send: [notification]
-  template.notification: {{ .Files.Get "scripts/discord-notification.yaml" | quote }}
+  template.notification: {{ .Files.Get "resources/notification/discord.yaml" | quote }}

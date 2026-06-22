@@ -1,0 +1,14 @@
+{{ define "retoday.batch.message" -}}
+{{- range .Alerts }}
+
+{{- if .Annotations.description }}
+{{ .Annotations.description }}
+{{- end }}
+
+**환경:** `{{ .Labels.environment }}`
+{{- if .Annotations.duration }}
+**소요 시간:** {{ .Annotations.duration }}
+{{- end }}
+
+{{- end }}
+{{- end }}

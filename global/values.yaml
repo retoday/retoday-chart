@@ -33,6 +33,15 @@ prometheus:
   forceNamespace: prometheus
   server:
     retention: 7d
+    alertmanagers:
+    - static_configs:
+      - targets:
+        - retoday-global-alertmanager.prometheus.svc.cluster.local:9093
+    extraConfigmapMounts:
+    - name: alertmanager-rules
+      mountPath: /etc/prometheus/alertmanager/rules
+      configMap: prometheus-alertmanager-rules-cm
+      readOnly: true
     persistentVolume:
       size: 15Gi
     resources:
@@ -49,8 +58,59 @@ prometheus:
     namespaceOverride: prometheus
     persistence:
       enabled: false
+    extraVolumeMounts:
+    - name: alertmanager-templates
+      mountPath: /etc/prometheus/alertmanager/templates
+      readOnly: true
+    extraVolumes:
+    - name: alertmanager-templates
+      configMap:
+        name: prometheus-alertmanager-templates-cm
+    extraSecretMounts:
+    - name: prometheus-alertmanager-secret
+      mountPath: /etc/prometheus/alertmanager/secrets
+      secretName: prometheus-alertmanager-secret
+      readOnly: true
+    config:
+      templates:
+      - /etc/prometheus/alertmanager/templates/*.tmpl
+      route:
+        group_by:
+        - alertname
+        - environment
+        - cronjob
+        receiver: batch-receiver
+        repeat_interval: 1h
+      receivers:
+      - name: batch-receiver
+        discord_configs:
+        - webhook_url_file: /etc/prometheus/alertmanager/secrets/discord-webhook-url
+          send_resolved: false
+          title: '{{ .CommonAnnotations.title }}'
+          message: '{{ template "retoday.batch.message" . }}'
   prometheus-pushgateway:
-    enabled: false
+    enabled: true
+    namespaceOverride: prometheus
+    resources:
+      requests:
+        cpu: 20m
+        memory: 32Mi
+      limits:
+        cpu: 100m
+        memory: 128Mi
+  configmapReload:
+    prometheus:
+      extraConfigmapMounts:
+      - name: alertmanager-rules
+        mountPath: /etc/prometheus/alertmanager/rules
+        configMap: prometheus-alertmanager-rules-cm
+        readOnly: true
+      extraVolumeDirs:
+      - /etc/prometheus/alertmanager/rules
+  serverFiles:
+    prometheus.yml:
+      rule_files:
+      - /etc/prometheus/alertmanager/rules/*.yaml
 loki:
   namespaceOverride: loki
   deploymentMode: SingleBinary
@@ -142,36 +202,17 @@ grafana:
   grafana.ini:
     dashboards:
       default_home_dashboard_path: /var/lib/grafana/dashboards/retoday/api.json
-  datasources:
-    datasources.yaml:
-      apiVersion: 1
-      datasources:
-      - name: Prometheus
-        type: prometheus
-        uid: prometheus
-        access: proxy
-        url: http://retoday-global-prometheus-server.prometheus.svc.cluster.local
-        isDefault: true
-      - name: Loki
-        type: loki
-        uid: loki
-        access: proxy
-        url: http://retoday-global-loki-gateway.loki.svc.cluster.local
-  dashboardProviders:
-    dashboardproviders.yaml:
-      apiVersion: 1
-      providers:
-      - name: retoday
-        orgId: 1
-        folder: Retoday
-        folderUid: retoday
-        type: file
-        disableDeletion: false
-        allowUiUpdates: true
-        options:
-          path: /var/lib/grafana/dashboards/retoday
+  extraConfigmapMounts:
+  - name: provisioning-datasources
+    mountPath: /etc/grafana/provisioning/datasources
+    configMap: grafana-datasources-cm
+    readOnly: true
+  - name: provisioning-dashboards
+    mountPath: /etc/grafana/provisioning/dashboards
+    configMap: grafana-dashboard-providers-cm
+    readOnly: true
   dashboardsConfigMaps:
-    retoday: grafana-dashboard-cm
+    retoday: grafana-dashboards-cm
   ingress:
     enabled: true
     ingressClassName: nginx

@@ -5,7 +5,7 @@ webhook:
       {
         "embeds": [
           {
-            "title": "{{ .app.metadata.name }} 배포 {{ if and (eq .app.status.operationState.phase "Succeeded") (eq .app.status.health.status "Healthy") }}성공{{ else }}실패{{ end }}",
+            "title": "{{ .app.metadata.name }} 차트 배포 {{ if and (eq .app.status.operationState.phase "Succeeded") (eq .app.status.health.status "Healthy") }}성공{{ else }}실패{{ end }}",
             "color": {{ if and (eq .app.status.operationState.phase "Succeeded") (eq .app.status.health.status "Healthy") }}13949744{{ else }}16592173{{ end }},
             "fields": [{
               "name": "Sync Status",
