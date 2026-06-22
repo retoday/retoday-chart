@@ -6,7 +6,7 @@ api:
   containerName: retoday-api
   replicas: 3
   revisionHistoryLimit: 5
-  image: re-today.cr.gabiacloud.com/retoday-api:d6b1330361c0daf8b4ad4587a46d9130b786d28a
+  image: re-today.cr.gabiacloud.com/retoday-api:d18b5f8bd96e191756f3ad0f27b7616803b20b5f
   ingress:
     host: api.re-today.com
   resources:
@@ -17,7 +17,7 @@ api:
       memory: 2Gi
 batch:
   name: retoday-batch
-  image: re-today.cr.gabiacloud.com/retoday-batch:d6b1330361c0daf8b4ad4587a46d9130b786d28a
+  image: re-today.cr.gabiacloud.com/retoday-batch:d18b5f8bd96e191756f3ad0f27b7616803b20b5f
   resources:
     requests:
       cpu: 100m
@@ -26,18 +26,18 @@ batch:
       cpu: 500m
       memory: 1Gi
   jobs:
-  - name: generate-recap-seoul
-    jobName: generateRecapJob
-    schedule: "0 0 * * *"
-    timeZone: Asia/Seoul
-    parameters:
-      timeZone: SEOUL
-  - name: generate-recap-pacific
-    jobName: generateRecapJob
-    schedule: "0 0 * * *"
-    timeZone: America/Los_Angeles
-    parameters:
-      timeZone: PACIFIC
+    - name: generate-recap-seoul
+      jobName: generateRecapJob
+      schedule: "0 0 * * *"
+      timeZone: Asia/Seoul
+      parameters:
+        timeZone: SEOUL
+    - name: generate-recap-pacific
+      jobName: generateRecapJob
+      schedule: "0 0 * * *"
+      timeZone: America/Los_Angeles
+      parameters:
+        timeZone: PACIFIC
 mysql:
   namespaceOverride: retoday-prod
   fullnameOverride: retoday-mysql
