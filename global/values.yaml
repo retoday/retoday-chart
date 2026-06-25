@@ -22,7 +22,27 @@ argo-rollouts:
   controller:
     replicas: 1
   dashboard:
-    enabled: false
+    enabled: true
+    readonly: true
+    ingress:
+      enabled: true
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt
+        nginx.ingress.kubernetes.io/ssl-redirect: "true"
+      ingressClassName: nginx
+      hosts:
+      - argo-rollouts.re-today.com
+      tls:
+      - secretName: argo-rollouts-tls
+        hosts:
+        - argo-rollouts.re-today.com
+    resources:
+      requests:
+        cpu: 20m
+        memory: 64Mi
+      limits:
+        cpu: 100m
+        memory: 128Mi
 swagger:
   name: swagger
   namespace: swagger

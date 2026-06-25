@@ -4,7 +4,7 @@ argo-cd:
     keep: true
   namespaceOverride: argo-cd
   global:
-    domain: argocd.re-today.com
+    domain: argo-cd.re-today.com
   configs:
     params:
       server.insecure: true
@@ -21,7 +21,7 @@ argo-cd:
         nginx.ingress.kubernetes.io/backend-protocol: HTTP
         nginx.ingress.kubernetes.io/ssl-redirect: true
       ingressClassName: nginx
-      hostname: argocd.re-today.com
+      hostname: argo-cd.re-today.com
       tls: true
   notifications:
     cm:
