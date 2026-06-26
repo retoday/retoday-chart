@@ -40,6 +40,10 @@ spec:
               value: {{ $.Values.env }}
             - name: SPRING_BATCH_JOB_NAME
               value: {{ .jobName }}
+            - name: BATCH_CRONJOB_NAME
+              value: {{ .name }}
+            - name: PROMETHEUS_PUSHGATEWAY_ADDRESS
+              value: retoday-global-prometheus-pushgateway.prometheus.svc.cluster.local:9091
             - name: POD_NAME
               valueFrom:
                 fieldRef:

@@ -1,0 +1,33 @@
+groups:
+- name: retoday-batch
+  rules:
+  - alert: BatchJobSucceeded
+    expr: spring_batch_job_seconds_sum{spring_batch_job_status="COMPLETED"} > 0 and on(job, environment, cronjob) (time() - push_time_seconds < 300)
+    labels:
+      severity: info
+      service: retoday-batch
+      status: COMPLETED
+    annotations:
+      title: "{{ .Labels.cronjob }} 배치 작업 완료"
+      description: "배치 작업이 정상적으로 완료되었습니다."
+      duration: '{{ printf "%.1f" $value }}초'
+  - alert: BatchJobFailed
+    expr: spring_batch_job_seconds_sum{spring_batch_job_status="FAILED"} > 0 and on(job, environment, cronjob) (time() - push_time_seconds < 300)
+    labels:
+      severity: critical
+      service: retoday-batch
+      status: FAILED
+    annotations:
+      title: "{{ .Labels.cronjob }} 배치 작업 실패"
+      description: "배치 작업 중 오류가 발생했습니다."
+      duration: '{{ printf "%.1f" $value }}초'
+  - alert: BatchJobRunningTooLong
+    expr: spring_batch_job_active_seconds_sum > 1800
+    for: 5m
+    labels:
+      severity: warning
+      service: retoday-batch
+      status: RUNNING
+    annotations:
+      title: "{{ .Labels.cronjob }} 배치 작업 실행 시간 초과"
+      description: "현재 배치 작업이 30분 이상 실행 중입니다."

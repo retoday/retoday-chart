@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-alertmanager-rules-cm
+  namespace: {{ .Values.prometheus.forceNamespace }}
+data:
+{{ (.Files.Glob "resources/prometheus/alertmanager/rules/*.yaml").AsConfig | indent 2 }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-alertmanager-templates-cm
+  namespace: {{ .Values.prometheus.forceNamespace }}
+data:
+{{ (.Files.Glob "resources/prometheus/alertmanager/templates/*.tmpl").AsConfig | indent 2 }}
