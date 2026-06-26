@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-dashboards-cm
+  namespace: {{ .Values.grafana.namespaceOverride }}
+data:
+{{- range $path, $_ := .Files.Glob "resources/grafana/dashboards/*.json" }}
+  {{ base $path }}: |-
+{{ $.Files.Get $path | nindent 4 }}
+{{- end }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-datasources-cm
+  namespace: {{ .Values.grafana.namespaceOverride }}
+data:
+{{ (.Files.Glob "resources/grafana/datasources.yaml").AsConfig | indent 2 }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-dashboard-providers-cm
+  namespace: {{ .Values.grafana.namespaceOverride }}
+data:
+{{ (.Files.Glob "resources/grafana/dashboard-providers.yaml").AsConfig | indent 2 }}

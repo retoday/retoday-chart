@@ -1,0 +1,11 @@
+apiVersion: 1
+providers:
+- name: retoday
+  orgId: 1
+  folder: Retoday
+  folderUid: retoday
+  type: file
+  disableDeletion: false
+  allowUiUpdates: false
+  options:
+    path: /var/lib/grafana/dashboards/retoday
