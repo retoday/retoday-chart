@@ -105,8 +105,3 @@ redis:
       limits:
         cpu: 100m
         memory: 128Mi
-cert-manager:
-  issuer:
-    name: letsencrypt
-  acme:
-    server: https://acme-v02.api.letsencrypt.org/directory

@@ -109,8 +109,3 @@ redis:
       limits:
         cpu: 100m
         memory: 128Mi
-cert-manager:
-  issuer:
-    name: letsencrypt-staging
-  acme:
-    server: https://acme-staging-v02.api.letsencrypt.org/directory

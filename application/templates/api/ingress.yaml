@@ -5,15 +5,8 @@ metadata:
   namespace: {{ .Values.namespace }}
   labels:
     app.kubernetes.io/component: api
-  annotations:
-    cert-manager.io/cluster-issuer: letsencrypt
-    nginx.ingress.kubernetes.io/ssl-redirect: "true"
 spec:
   ingressClassName: {{ .Values.ingressClassName }}
-  tls:
-  - secretName: retoday-api-tls
-    hosts:
-    - {{ .Values.api.ingress.host }}
   rules:
   - host: {{ .Values.api.ingress.host }}
     http:

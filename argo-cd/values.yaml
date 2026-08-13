@@ -16,13 +16,8 @@ argo-cd:
     replicas: 1
     ingress:
       enabled: true
-      annotations:
-        cert-manager.io/cluster-issuer: letsencrypt
-        nginx.ingress.kubernetes.io/backend-protocol: HTTP
-        nginx.ingress.kubernetes.io/ssl-redirect: true
       ingressClassName: nginx
       hostname: argo-cd.re-today.com
-      tls: true
   notifications:
     cm:
       create: false

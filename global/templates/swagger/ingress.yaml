@@ -5,15 +5,8 @@ metadata:
   namespace: {{ .Values.swagger.namespace }}
   labels:
     app.kubernetes.io/component: swagger
-  annotations:
-    cert-manager.io/cluster-issuer: letsencrypt
-    nginx.ingress.kubernetes.io/ssl-redirect: "true"
 spec:
   ingressClassName: {{ index .Values "ingress-nginx" "controller" "ingressClass" }}
-  tls:
-  - secretName: swagger-tls
-    hosts:
-    - {{ .Values.swagger.ingress.host }}
   rules:
   - host: {{ .Values.swagger.ingress.host }}
     http:

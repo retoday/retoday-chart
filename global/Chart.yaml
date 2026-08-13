@@ -8,9 +8,6 @@ dependencies:
 - name: argo-rollouts
   repository: https://argoproj.github.io/argo-helm
   version: 2.40.9
-- name: cert-manager
-  repository: https://charts.jetstack.io
-  version: v1.20.2
 - name: prometheus
   repository: https://prometheus-community.github.io/helm-charts
   version: 29.6.0
