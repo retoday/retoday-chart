@@ -4,12 +4,21 @@ ingress-nginx:
   controller:
     kind: DaemonSet
     ingressClass: nginx
+    config:
+      use-forwarded-headers: "true"
+      proxy-real-ip-cidr: 10.0.0.0/16
     service:
       type: LoadBalancer
       externalTrafficPolicy: Local
+      enableHttp: false
+      appProtocol: false
+      targetPorts:
+        https: http
       annotations:
         loadbalancer.openstack.org/flavor-id: adc12270-f56a-4ef1-bb00-429aad71ef6e
         loadbalancer.openstack.org/availability-zone: KR1-Zone1-LB
+        loadbalancer.openstack.org/x-forwarded-for: "true"
+        loadbalancer.openstack.org/default-tls-container-ref: https://external.gabiacloud.com:9311/v1/secrets/28998961-5d7e-496f-b517-85ab7cea3bd5
       nodePorts:
         http: 30080
         https: 30443
