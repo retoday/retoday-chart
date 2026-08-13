@@ -2,9 +2,11 @@ namespace: retoday-global
 ingress-nginx:
   namespaceOverride: ingress-nginx
   controller:
+    kind: DaemonSet
     ingressClass: nginx
     service:
       type: LoadBalancer
+      externalTrafficPolicy: Local
       annotations:
         loadbalancer.openstack.org/flavor-id: adc12270-f56a-4ef1-bb00-429aad71ef6e
         loadbalancer.openstack.org/availability-zone: KR1-Zone1-LB
