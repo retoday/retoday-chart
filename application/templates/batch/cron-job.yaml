@@ -30,18 +30,36 @@ spec:
           - name: {{ .name }}
             image: {{ $.Values.batch.image }}
             imagePullPolicy: Always
+            command:
+            - /bin/sh
+            - -c
             args:
+            - |
+              set -eu
+              scheduled_minutes=${JOB_NAME##*-}
+
+              case "$scheduled_minutes" in
+                ''|*[!0-9]*) echo "Invalid CronJob Job name: $JOB_NAME" >&2; exit 1 ;;
+              esac
+
+              scheduled_at=$(date -u -d "@$((scheduled_minutes * 60))" +%Y-%m-%dT%H:%M:%SZ)
+              exec java -cp @/app/jib-classpath-file com.retoday.batch.BatchApplicationKt \
+              "$@" "scheduledAt=${scheduled_at}" "run.id=${POD_NAME}"
+            - batch-runner
             {{- range $key, $value := .parameters }}
             - {{ $key }}={{ $value }}
             {{- end }}
-            - run.id=$(POD_NAME)
             env:
             - name: SPRING_PROFILES_ACTIVE
               value: {{ $.Values.env }}
             - name: SPRING_BATCH_JOB_NAME
               value: {{ .jobName }}
-            - name: BATCH_CRONJOB_NAME
+            - name: CRON_JOB_NAME
               value: {{ .name }}
+            - name: JOB_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.labels['batch.kubernetes.io/job-name']
             - name: PROMETHEUS_PUSHGATEWAY_ADDRESS
               value: retoday-global-prometheus-pushgateway.prometheus.svc.cluster.local:9091
             - name: POD_NAME
