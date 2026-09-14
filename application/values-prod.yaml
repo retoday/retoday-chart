@@ -26,18 +26,20 @@ batch:
       cpu: 500m
       memory: 1Gi
   jobs:
-    - name: generate-recap-seoul
-      jobName: generateRecapJob
-      schedule: "0 0 * * *"
-      timeZone: Asia/Seoul
-      parameters:
-        timeZone: SEOUL
-    - name: generate-recap-pacific
-      jobName: generateRecapJob
-      schedule: "0 0 * * *"
-      timeZone: America/Los_Angeles
-      parameters:
-        timeZone: PACIFIC
+  - name: generate-recap-seoul
+    jobName: generateRecapJob
+    schedule: "0 0 * * *"
+    timeZone: Asia/Seoul
+    parameters:
+      timeZone: SEOUL
+      aiProvider: BEDROCK
+  - name: generate-recap-pacific
+    jobName: generateRecapJob
+    schedule: "0 0 * * *"
+    timeZone: America/Los_Angeles
+    parameters:
+      timeZone: PACIFIC
+      aiProvider: BEDROCK
 mysql:
   namespaceOverride: retoday-prod
   fullnameOverride: retoday-mysql
