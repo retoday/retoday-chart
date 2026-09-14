@@ -5,7 +5,7 @@ api:
   name: retoday-api
   replicas: 1
   revisionHistoryLimit: 1
-  image: re-today.cr.gabiacloud.com/retoday-api:0a0c9c183e0bb91496b3784cb1a414acffc2f058
+  image: re-today.cr.gabiacloud.com/retoday-api:7141fc30b72d4fecbbc86fa2bb5652c82917158f
   ingress:
     host: api.dev.re-today.com
   resources:
@@ -17,7 +17,7 @@ api:
       memory: 1Gi
 batch:
   name: retoday-batch
-  image: re-today.cr.gabiacloud.com/retoday-batch:0a0c9c183e0bb91496b3784cb1a414acffc2f058
+  image: re-today.cr.gabiacloud.com/retoday-batch:7141fc30b72d4fecbbc86fa2bb5652c82917158f
   resources:
     requests:
       cpu: 50m
@@ -26,22 +26,22 @@ batch:
       cpu: 250m
       memory: 512Mi
   jobs:
-  - name: generate-recap-seoul
-    jobName: generateRecapJob
-    schedule: "0 0 * * *"
-    timeZone: Asia/Seoul
-    suspend: true
-    parameters:
-      timeZone: SEOUL
-      aiProvider: BEDROCK
-  - name: generate-recap-pacific
-    jobName: generateRecapJob
-    schedule: "0 0 * * *"
-    timeZone: America/Los_Angeles
-    suspend: true
-    parameters:
-      timeZone: PACIFIC
-      aiProvider: BEDROCK
+    - name: generate-recap-seoul
+      jobName: generateRecapJob
+      schedule: "0 0 * * *"
+      timeZone: Asia/Seoul
+      suspend: true
+      parameters:
+        timeZone: SEOUL
+        aiProvider: BEDROCK
+    - name: generate-recap-pacific
+      jobName: generateRecapJob
+      schedule: "0 0 * * *"
+      timeZone: America/Los_Angeles
+      suspend: true
+      parameters:
+        timeZone: PACIFIC
+        aiProvider: BEDROCK
 mysql:
   namespaceOverride: retoday-dev
   fullnameOverride: retoday-mysql
