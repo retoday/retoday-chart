@@ -5,7 +5,7 @@ api:
   name: retoday-api
   replicas: 1
   revisionHistoryLimit: 1
-  image: re-today.cr.gabiacloud.com/retoday-api:7e6fd61d5f3e0a74b750eaa9820546546b44be8d
+  image: re-today.cr.gabiacloud.com/retoday-api:3403efbaf4d5f867a8ef98de02415d272a394c11
   ingress:
     host: api.dev.re-today.com
   resources:
@@ -17,7 +17,7 @@ api:
       memory: 1Gi
 batch:
   name: retoday-batch
-  image: re-today.cr.gabiacloud.com/retoday-batch:7e6fd61d5f3e0a74b750eaa9820546546b44be8d
+  image: re-today.cr.gabiacloud.com/retoday-batch:3403efbaf4d5f867a8ef98de02415d272a394c11
   resources:
     requests:
       cpu: 50m
