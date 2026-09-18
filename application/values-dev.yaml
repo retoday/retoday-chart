@@ -1,8 +1,6 @@
 env: dev
 namespace: retoday-dev
-ingressClassName: nginx
 api:
-  name: retoday-api
   replicas: 1
   revisionHistoryLimit: 1
   image: re-today.cr.gabiacloud.com/retoday-api:3403efbaf4d5f867a8ef98de02415d272a394c11
@@ -16,7 +14,6 @@ api:
       cpu: 500m
       memory: 1Gi
 batch:
-  name: retoday-batch
   image: re-today.cr.gabiacloud.com/retoday-batch:3403efbaf4d5f867a8ef98de02415d272a394c11
   resources:
     requests:
@@ -26,38 +23,15 @@ batch:
       cpu: 250m
       memory: 512Mi
   jobs:
-    - name: generate-recap-seoul
-      jobName: generateRecapJob
-      schedule: "0 0 * * *"
-      timeZone: Asia/Seoul
+    generate-recap-seoul:
       suspend: true
-      parameters:
-        timeZone: SEOUL
-        aiProvider: BEDROCK
-    - name: generate-recap-pacific
-      jobName: generateRecapJob
-      schedule: "0 0 * * *"
-      timeZone: America/Los_Angeles
+    generate-recap-pacific:
       suspend: true
-      parameters:
-        timeZone: PACIFIC
-        aiProvider: BEDROCK
 mysql:
   namespaceOverride: retoday-dev
-  fullnameOverride: retoday-mysql
-  architecture: standalone
-  image:
-    repository: bitnamilegacy/mysql
-    tag: 9.4.0-debian-12-r0
-  auth:
-    existingSecret: retoday-mysql-secret
-    database: retoday
   primary:
     persistence:
       size: 2Gi
-    service:
-      ports:
-        mysql: 3306
     resources:
       requests:
         cpu: 100m
@@ -65,30 +39,9 @@ mysql:
       limits:
         cpu: 500m
         memory: 1Gi
-  metrics:
-    enabled: true
-    image:
-      repository: bitnamilegacy/mysqld-exporter
-    service:
-      annotations:
-        prometheus.io/scrape: "true"
-        prometheus.io/port: "9104"
-    resources:
-      requests:
-        cpu: 20m
-        memory: 64Mi
-      limits:
-        cpu: 100m
-        memory: 128Mi
 redis:
   namespaceOverride: retoday-dev
-  fullnameOverride: retoday-redis
-  architecture: standalone
-  auth:
-    existingSecret: retoday-redis-secret
   master:
-    persistence:
-      enabled: false
     resources:
       requests:
         cpu: 50m
@@ -96,18 +49,3 @@ redis:
       limits:
         cpu: 250m
         memory: 256Mi
-  metrics:
-    enabled: true
-    image:
-      repository: bitnamilegacy/redis-exporter
-    service:
-      annotations:
-        prometheus.io/scrape: "true"
-        prometheus.io/port: "9121"
-    resources:
-      requests:
-        cpu: 20m
-        memory: 64Mi
-      limits:
-        cpu: 100m
-        memory: 128Mi
