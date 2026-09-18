@@ -31,6 +31,10 @@ mysql:
     service:
       ports:
         mysql: 3306
+    extraFlags: >-
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_general_ci
+      --default-time-zone=+00:00
   metrics:
     enabled: true
     image:
