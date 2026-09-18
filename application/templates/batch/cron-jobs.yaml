@@ -1,23 +1,23 @@
-{{- range .Values.batch.jobs }}
+{{- range $name, $job := .Values.batch.jobs }}
 ---
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: {{ .name }}
+  name: {{ $name }}
   namespace: {{ $.Values.namespace }}
   labels:
     app.kubernetes.io/component: batch
 spec:
-  schedule: {{ .schedule }}
-  timeZone: {{ .timeZone }}
-  suspend: {{ .suspend | default false }}
-  concurrencyPolicy: {{ .concurrencyPolicy | default "Forbid" }}
-  successfulJobsHistoryLimit: {{ .successfulJobsHistoryLimit | default 1 }}
-  failedJobsHistoryLimit: {{ .failedJobsHistoryLimit | default 3 }}
+  schedule: {{ $job.schedule }}
+  timeZone: {{ $job.timeZone }}
+  suspend: {{ $job.suspend | default false }}
+  concurrencyPolicy: {{ $job.concurrencyPolicy | default "Forbid" }}
+  successfulJobsHistoryLimit: {{ $job.successfulJobsHistoryLimit | default 1 }}
+  failedJobsHistoryLimit: {{ $job.failedJobsHistoryLimit | default 3 }}
   jobTemplate:
     spec:
-      backoffLimit: {{ .backoffLimit | default 1 }}
-      {{- with .activeDeadlineSeconds }}
+      backoffLimit: {{ $job.backoffLimit | default 1 }}
+      {{- with $job.activeDeadlineSeconds }}
       activeDeadlineSeconds: {{ . }}
       {{- end }}
       template:
@@ -27,7 +27,7 @@ spec:
         spec:
           restartPolicy: Never
           containers:
-          - name: {{ .name }}
+          - name: {{ $name }}
             image: {{ $.Values.batch.image }}
             imagePullPolicy: Always
             command:
@@ -43,19 +43,20 @@ spec:
               esac
 
               scheduled_at=$(date -u -d "@$((scheduled_minutes * 60))" +%Y-%m-%dT%H:%M:%SZ)
+
               exec java -cp @/app/jib-classpath-file com.retoday.batch.BatchApplicationKt \
               "$@" "scheduledAt=${scheduled_at}" "run.id=${POD_NAME}"
             - batch-runner
-            {{- range $key, $value := .parameters }}
+            {{- range $key, $value := $job.parameters }}
             - {{ $key }}={{ $value }}
             {{- end }}
             env:
             - name: SPRING_PROFILES_ACTIVE
               value: {{ $.Values.env }}
             - name: SPRING_BATCH_JOB_NAME
-              value: {{ .jobName }}
+              value: {{ $job.jobName }}
             - name: CRON_JOB_NAME
-              value: {{ .name }}
+              value: {{ $name }}
             - name: JOB_NAME
               valueFrom:
                 fieldRef:
@@ -70,7 +71,7 @@ spec:
             - secretRef:
                 name: retoday-secret
             resources:
-              {{- toYaml (.resources | default $.Values.batch.resources) | nindent 14 }}
+                {{ toYaml ($job.resources | default $.Values.batch.resources) | nindent 16 }}
           imagePullSecrets:
           - name: docker-secret
 {{- end }}

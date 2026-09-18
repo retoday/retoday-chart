@@ -1,0 +1,71 @@
+ingressClassName: nginx
+api:
+  name: retoday-api
+batch:
+  name: retoday-batch
+  jobs:
+    generate-recap-seoul:
+      jobName: generateRecapJob
+      schedule: 0 0 * * *
+      timeZone: Asia/Seoul
+      parameters:
+        timeZone: SEOUL
+        aiProvider: BEDROCK
+    generate-recap-pacific:
+      jobName: generateRecapJob
+      schedule: 0 0 * * *
+      timeZone: America/Los_Angeles
+      parameters:
+        timeZone: PACIFIC
+        aiProvider: BEDROCK
+mysql:
+  fullnameOverride: retoday-mysql
+  architecture: standalone
+  image:
+    repository: bitnamilegacy/mysql
+    tag: 9.4.0-debian-12-r0
+  auth:
+    existingSecret: retoday-mysql-secret
+    database: retoday
+  primary:
+    service:
+      ports:
+        mysql: 3306
+  metrics:
+    enabled: true
+    image:
+      repository: bitnamilegacy/mysqld-exporter
+    service:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9104"
+    resources:
+      requests:
+        cpu: 20m
+        memory: 64Mi
+      limits:
+        cpu: 100m
+        memory: 128Mi
+redis:
+  fullnameOverride: retoday-redis
+  architecture: standalone
+  auth:
+    existingSecret: retoday-redis-secret
+  master:
+    persistence:
+      enabled: false
+  metrics:
+    enabled: true
+    image:
+      repository: bitnamilegacy/redis-exporter
+    service:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9121"
+    resources:
+      requests:
+        cpu: 20m
+        memory: 64Mi
+      limits:
+        cpu: 100m
+        memory: 128Mi
