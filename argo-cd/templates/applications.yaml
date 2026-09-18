@@ -1,28 +1,28 @@
-{{- range .Values.applications }}
+{{- range $name, $application := .Values.applications }}
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: {{ .name }}
+  name: {{ $name }}
   namespace: {{ $.Values.namespace }}
   annotations:
     notifications.argoproj.io/subscribe.sync-operation-change.discord: ""
   finalizers:
   - resources-finalizer.argocd.argoproj.io
 spec:
-  project: {{ .project | default "default" }}
+  project: {{ $application.project | default "default" }}
   source:
     repoURL: https://github.com/retoday/retoday-chart
     targetRevision: main
-    path: {{ .path }}
+    path: {{ $application.path }}
     helm:
       valueFiles:
-      {{- range .valueFiles }}
-      - {{ . }}
+      {{- range $valueFile := $application.valueFiles }}
+      - {{ $valueFile }}
       {{- end }}
   destination:
     server: https://kubernetes.default.svc
-    namespace: {{ .namespace }}
+    namespace: {{ $application.namespace }}
   syncPolicy:
     automated:
       prune: true
